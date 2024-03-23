@@ -1,0 +1,110 @@
+-- User Table
+CREATE TABLE User (
+  username VARCHAR(255) PRIMARY KEY,
+  password VARCHAR(60) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  type ENUM('provider', 'employee', 'client') NOT NULL
+);
+
+-- Provider Table
+CREATE TABLE Provider (
+  username VARCHAR(255) PRIMARY KEY,
+  company VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES User(username)
+);
+
+-- Employee Table
+CREATE TABLE Employee (
+  username VARCHAR(255) PRIMARY KEY,
+  employee_name VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES User(username)
+);
+
+-- Client Table
+CREATE TABLE Client (
+  username VARCHAR(255) PRIMARY KEY,
+  first_name VARCHAR(255) NOT NULL,
+  last_name VARCHAR(255) NOT NULL,
+  FOREIGN KEY (username) REFERENCES User(username)
+);
+
+-- Product Table
+CREATE TABLE IF NOT EXISTS Product (
+  product_id VARCHAR(255) PRIMARY KEY,
+  price DECIMAL(10, 2) NOT NULL,
+  currency VARCHAR(3) NOT NULL,
+  weight TEXT NOT NULL,
+  name VARCHAR(255) NOT NULL,
+  brand VARCHAR(255) NOT NULL,
+  quantity INT NOT NULL,
+  prices_availability VARCHAR(255),
+  prices_condition TEXT,
+  prices_merchant VARCHAR(255),
+  prices_sourceURLs TEXT,
+  categories TEXT,
+  dateAdded VARCHAR(255),
+  dateUpdated VARCHAR(255),
+  imageURLs TEXT,
+  sourceURLs TEXT,
+  rating DECIMAL(3, 1),
+  nr_rating INT,
+  description TEXT,
+)
+
+-- Order Table
+CREATE TABLE `Order` (
+  order_id INT AUTO_INCREMENT PRIMARY KEY,
+  client_username VARCHAR(255) NOT NULL,
+  employee_username VARCHAR(255) NOT NULL,
+  date_created DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  employee_approved BOOLEAN NOT NULL DEFAULT FALSE,
+  FOREIGN KEY (client_username) REFERENCES Client(username),
+  FOREIGN KEY (employee_username) REFERENCES Employee(username)
+);
+
+-- OrderDetails Table
+CREATE TABLE OrderDetails (
+  order_detail_id INT AUTO_INCREMENT PRIMARY KEY,
+  order_id INT NOT NULL,
+  product_id VARCHAR(255) NOT NULL,
+  provider_username VARCHAR(255) NOT NULL,
+  provider_approved BOOLEAN NOT NULL DEFAULT FALSE,
+  quantity INT NOT NULL,
+  FOREIGN KEY (order_id) REFERENCES `Order`(order_id),
+  FOREIGN KEY (product_id) REFERENCES Product(product_id),
+  FOREIGN KEY (provider_username) REFERENCES Provider(username)
+);
+
+-- Populate Sample Data
+-- Users
+INSERT INTO User (username, password, email, type) 
+VALUES 
+('providerXYZ', 'password123', 'provider@example.com', 'provider'),
+('employee456', 'password456', 'employee@example.com', 'employee'),
+('client123', 'password789', 'client@example.com', 'client');
+
+-- Providers
+INSERT INTO Provider (username, company)
+VALUES ('providerXYZ', 'Example Provider Inc.');
+
+-- Employees
+INSERT INTO Employee (username, employee_name)
+VALUES ('employee456', 'John Doe');
+
+-- Clients
+INSERT INTO Client (username, first_name, last_name)
+VALUES ('client123', 'Alice', 'Smith');
+
+
+-- Orders
+INSERT INTO `Order` (client_username, employee_username, employee_approved)
+VALUES ('client123', 'employee456', TRUE);
+
+-- Retrieve Order ID
+SET @order_id = LAST_INSERT_ID();
+
+-- OrderDetails
+INSERT INTO OrderDetails (order_id, product_id, provider_username, quantity, provider_approved)
+VALUES 
+(@order_id, 'product789', 'providerXYZ', 2, TRUE),
+(@order_id, 'product012', 'providerXYZ', 1, TRUE);
