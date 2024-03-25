@@ -3,11 +3,9 @@ import { useAddedToCart } from "../APIs/AddToCart";
 import styled from "styled-components";
 import { useQuery } from "@tanstack/react-query";
 import Spinner from "../../Spinner";
-import toast from "react-hot-toast";
 import { useConvertPrice } from "../APIs/ConvertPrice";
 import { useEffect, useState } from "react";
 import { convertUSDtoRON, formatCurrency } from "../helpers/helpers";
-import { set } from "react-hook-form";
 
 const Details = styled.div`
   display: flex;
@@ -89,7 +87,7 @@ function CommandsLists() {
 
   const fetchIdAddress = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/get_address/${username}`
+      `http://127.0.0.1:8005/get_address/${username}`
     );
     if (!response.ok) throw new Error("Something went wrong");
     return response.json();
@@ -115,7 +113,7 @@ function CommandsLists() {
   const checkout = async () => {
     console.log(price, currency);
     try {
-      const response = await fetch("http://localhost:4000/checkout", {
+      const response = await fetch("http://localhost:8005/checkout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -125,7 +123,7 @@ function CommandsLists() {
       const data = await response.json();
 
       if (data.url) {
-        localStorage.setItem("paymentData", JSON.stringify(data));
+        // localStorage.setItem("paymentData", JSON.stringify(data));
         window.location.assign(data.url);
       }
     } catch (error) {
@@ -133,38 +131,38 @@ function CommandsLists() {
     }
   };
 
-  async function handleSubmitOrder() {
-    const finishCommand = {
-      address_id: data ? data[0].address_id : null,
-      employee_username: "employee456",
-      products: items,
-    };
+  // async function handleSubmitOrder() {
+  //   const finishCommand = {
+  //     address_id: data ? data[0].address_id : null,
+  //     employee_username: "test_employee",
+  //     products: items,
+  //   };
 
-    try {
-      const response = await fetch("http://192.168.0.203:8005/add_command", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(finishCommand),
-      });
+  //   try {
+  //     const response = await fetch("http://127.0.0.1:8005/add_command", {
+  //       method: "POST",
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //       body: JSON.stringify(finishCommand),
+  //     });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
 
-      const data = await response.json();
+  //     const data = await response.json();
 
-      toast.success(data.message);
+  //     toast.success(data.message);
 
-      setAddedShopping([]);
-    } catch (error) {
-      toast.error("Comanda nu a fost plasata! Va rugam incercati din nou!");
-      console.error("Error while adding order:", error);
-    }
+  //     setAddedShopping([]);
+  //   } catch (error) {
+  //     toast.error("Comanda nu a fost plasata! Va rugam incercati din nou!");
+  //     console.error("Error while adding order:", error);
+  //   }
 
-    navigate("/succes");
-  }
+  //   navigate("/succes");
+  // }
 
   return (
     <StyleCommand>
@@ -188,7 +186,7 @@ function CommandsLists() {
         <Button onClick={() => navigate("/electronix/1")}>
           Intoarceti-va la pagina originala
         </Button>
-        <Button onClick={checkout}>Plasati Comanda</Button>
+        <Button onClick={() => checkout()}>Plasati Comanda</Button>
       </Buttons>
     </StyleCommand>
   );

@@ -121,7 +121,7 @@ function App() {
                           }
                         />
                         <Route
-                          path="succes"
+                          path="success"
                           element={
                             <ProtectedRoute>
                               <FinishCommand />

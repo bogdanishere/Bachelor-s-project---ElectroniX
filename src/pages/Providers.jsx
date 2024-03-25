@@ -24,7 +24,7 @@ function Providers() {
 
   const fetchProvidersConfirmations = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/show_order_details/${username}`
+      `http://127.0.0.1:8005/show_order_details/${username}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -36,35 +36,7 @@ function Providers() {
   const { data, error, isLoading } = useQuery({
     queryKey: ["providersConfirmations"],
     queryFn: fetchProvidersConfirmations,
-    // refetchInterval: 3000,
   });
-
-  // const fetchImages = async () => {
-  //   const response = await fetch(`http://192.168.0.203:8005/test/getImages`);
-  //   if (!response.ok) {
-  //     throw new Error("Network response was not ok");
-  //   }
-  //   return response.json();
-  // };
-
-  // const {
-  //   data: dataImages,
-  //   error: errorImages,
-  //   isLoading: loadinImages,
-  // } = useQuery({
-  //   queryKey: ["images"],
-  //   queryFn: fetchImages,
-  // });
-
-  // const { imageURLs } = dataImages;
-
-  // console.log(imageURLs);
-
-  // dataImages.map((image) => {
-  //   console.log(image);
-  // });
-
-  // console.log(data);
 
   if (isLoading) return <Spinner />;
   if (error) return <div>An error occurred: {error.message}</div>;
@@ -87,7 +59,7 @@ function Providers() {
   async function acceptOrder(id) {
     try {
       const response = await fetch(
-        `http://192.168.0.203:8005/confirm_provider/${id}`,
+        `http://127.0.0.1:8005/confirm_provider/${id}`,
         {
           method: "POST",
           headers: {
@@ -114,7 +86,7 @@ function Providers() {
   async function rejectOrder(id, orderId) {
     try {
       const response = await fetch(
-        `http://192.168.0.203:8005/delete_order_by_provider/${id}/${orderId}`,
+        `http://127.0.0.1:8005/delete_order_by_provider/${id}/${orderId}`,
         {
           method: "DELETE",
           headers: {
@@ -154,17 +126,6 @@ function Providers() {
       </Personal>
       <Title>Puteti adauga propriul vostru produs</Title>
       <AddProductForm providerUsername={username} />
-      {/* {imageURLs &&
-        imageURLs.map((image, i) => (
-          <img
-            src={image}
-            alt="image"
-            key={i}
-            style={{ paddingTop: "200px", paddingLeft: "200px" }}
-            width={"500px"}
-            height={"500px"}
-          />
-        ))} */}
     </>
   );
 }

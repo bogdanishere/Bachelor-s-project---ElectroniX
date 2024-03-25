@@ -28,7 +28,7 @@ function ProductPageDetails() {
 
   const fetchProductPageDetails = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/product/product/name/${productID}`
+      `http://127.0.0.1:8005/product/product/name/${productID}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");

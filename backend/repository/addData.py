@@ -9,7 +9,7 @@ config = {
     "password": "manager",
     "host": "localhost",
     "database": "electronix",
-    'port': 3308,
+    'port': 3306,
 }
 
 # Conectare la baza de date MySQL

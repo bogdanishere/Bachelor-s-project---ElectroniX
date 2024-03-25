@@ -35,7 +35,7 @@ function SearchedProduct() {
 
   const fetchSearchedProducts = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/product/${product}/${page}?sort=${sort}`
+      `http://127.0.0.1:8005/product/${product}/${page}?sort=${sort}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");

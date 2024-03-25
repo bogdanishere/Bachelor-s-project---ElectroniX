@@ -10,7 +10,7 @@ function Employee() {
   const queryClient = useQueryClient();
 
   const fetchCommands = async () => {
-    const response = await fetch(`http://192.168.0.203:8005/show_orders`);
+    const response = await fetch(`http://127.0.0.1:8005/show_orders`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
@@ -41,9 +41,10 @@ function Employee() {
   const name = "Angajatule";
 
   async function acceptOrder(id) {
+    console.log(id);
     try {
       const response = await fetch(
-        `http://192.168.0.203:8005/confirm_employee/${id}`,
+        `http://127.0.0.1:8005/confirm_employee/${id}`,
         {
           method: "POST",
           headers: {
@@ -68,15 +69,12 @@ function Employee() {
 
   async function rejectOrder(id) {
     try {
-      const response = await fetch(
-        `http://192.168.0.203:8005/delete_order/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`http://127.0.0.1:8005/delete_order/${id}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);

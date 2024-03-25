@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify
 import mysql.connector
 from mysql.connector import Error
 from flask_cors import CORS
-from controller.showProducts import showProducts
+from backend.client.showProducts import showProducts
 app = Flask(__name__)
 CORS(app)
 

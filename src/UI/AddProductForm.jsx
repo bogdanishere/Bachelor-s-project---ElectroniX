@@ -8,6 +8,7 @@ import {
   useQuery,
   useQueryClient,
 } from "@tanstack/react-query";
+import toast from "react-hot-toast";
 
 const Input = styled.input`
   border: 1px solid var(--color-grey-500);
@@ -126,16 +127,13 @@ function AddProductForm({ providerUsername }) {
     };
 
     try {
-      const response = await fetch(
-        "http://192.168.0.203:8005/add_new_product",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(product),
-        }
-      );
+      const response = await fetch("http://127.0.0.1:8005/add_new_product", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -143,9 +141,11 @@ function AddProductForm({ providerUsername }) {
 
       const responseData = await response.json();
       console.log("Success:", responseData);
+      toast.success("Product added successfully!");
       reset();
     } catch (error) {
       console.error("Error adding product:", error);
+      toast.error("An error occurred while adding the product!");
     }
   };
 

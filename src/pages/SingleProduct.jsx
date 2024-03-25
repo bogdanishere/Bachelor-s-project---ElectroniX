@@ -165,7 +165,7 @@ export function SingleProduct({ product, id }) {
 
   const fetchSearchNewProducts = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/product/${name.split("/").join(",")}/1`
+      `http://127.0.0.1:8005/product/${name.split("/").join(",")}/1`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
