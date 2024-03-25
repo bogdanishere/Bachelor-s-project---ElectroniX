@@ -1,7 +1,10 @@
-from flask import  jsonify, request
+from flask import jsonify, request
 import mysql.connector
 from mysql.connector import Error
+import jwt
+import datetime
 
+SECRET_KEY = "asdgfdagHSDHUFDS09fdss"  
 
 def loginClient(db_config, data):
     email = data.get('email')
@@ -15,11 +18,19 @@ def loginClient(db_config, data):
         user = cursor.fetchone()
 
         if user:
-            # Utilizator autentificat cu succes
-            return jsonify({'message': user['type'], 'user': user['username']}), 200
+            token = jwt.encode({
+                'username': user['username'],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)
+            }, SECRET_KEY, algorithm="HS256")
+            
+            return jsonify({
+                'message': user['type'], 
+                'user': user['username'],
+                'token': token  
+            }), 200
         else:
             # Eșec la autentificare
-            return jsonify({'error': 'Email sau parola gresita!'}), 401
+            return jsonify({'error': 'Email sau parola greșită!'}), 401
 
     except Error as e:
         # Eroare la executarea interogării

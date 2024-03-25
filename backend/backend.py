@@ -40,6 +40,8 @@ from client.verifyPayment import verify_payment
 from client.checkoutStripe import create_checkout_session
 from client.findAddress import findAddress
 
+import jwt
+
 # UPLOAD_FOLDER = '/backend'
 # ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 # def allowed_file(filename):
@@ -48,6 +50,7 @@ from client.findAddress import findAddress
 
 
 app = Flask(__name__)
+
 
 CORS(app)
 app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -75,6 +78,37 @@ db_config = {
 
 
 stripe.api_key = "sk_test_51Ow1Qg00IzukxrMJ1tHjjSbe43YsSjkfeGSN8KZJyxyr8nM6eAxH4mRBkloPBxOsJQ9VZzWEoa9O7XQjjxVkVfYs00vHyVh2nI"
+
+
+
+
+@app.route('/verify_token', methods=['POST'])
+def verify_token():
+    SECRET_KEY = "asdgfdagHSDHUFDS09fdss"
+    data = request.get_json()
+    token = data.get('token1')
+    try:
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM User WHERE username = %s", (decoded['username'],))
+        user = cursor.fetchone()
+
+        print(user)
+        print(decoded['username'])
+
+        if user:
+            return jsonify({'username': user['username'], 'type': user['type']}), 200
+        else:
+            return jsonify({'error': 'User not found', 'decoded': decoded['username']}), 404
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token expired'}), 401
+    except jwt.InvalidTokenError:
+
+        return jsonify({'error': 'Invalid token'}), 401
+    except Error as e:
+
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/checkout', methods=['POST'])

@@ -136,6 +136,8 @@ const Login = () => {
       setTypeUser(data?.message.split(" ")[0].toLowerCase());
       setUsername(data?.user);
       localStorage.setItem("username", JSON.stringify(data.user));
+      localStorage.removeItem("token");
+      localStorage.setItem("token", JSON.stringify(data.token));
 
       toast.success("V-ati autentificat cu succes!");
 
@@ -167,6 +169,59 @@ const Login = () => {
       navigate(-1);
     }
   }, [username, navigate, alreadyConnected]);
+
+  useEffect(() => {
+    const verifyTokenAndLogin = async () => {
+      const token = localStorage.getItem("token");
+
+      if (token) {
+        const token1 = token.replace(/['"]+/g, "");
+
+        try {
+          const response = await fetch("http://127.0.0.1:8005/verify_token", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ token1 }),
+          });
+
+          const data = await response.json();
+          if (!response.ok) {
+            throw new Error(data.error || "Could not verify token");
+          }
+
+          setTypeUser(data?.type.toLowerCase());
+          setUsername(data?.username);
+          console.log("data", data);
+          localStorage.setItem("username", JSON.stringify(data.username));
+          navigateBasedOnUserRole(data?.type.toLowerCase());
+        } catch (error) {
+          console.error("Token verification error:", error.message);
+
+          // localStorage.removeItem("token");
+        }
+      }
+    };
+
+    verifyTokenAndLogin();
+  }, []);
+
+  const navigateBasedOnUserRole = (userType) => {
+    switch (userType) {
+      case "employee":
+        navigate("/employee");
+        break;
+      case "provider":
+        navigate("/providers");
+        break;
+      case "client":
+        navigate("/electronix/1");
+        break;
+      default:
+        console.log("User type is unknown or not provided");
+    }
+  };
 
   return (
     <>

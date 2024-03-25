@@ -155,17 +155,24 @@ const Signup = () => {
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      addUsername(username);
-      // local storage
-      localStorage.setItem("username", JSON.stringify(username));
+      const data = await response.json();
 
-      toast.success("V-ati creat contul cu succes!");
-      setAlreadyConnected((loggedInUser) => !loggedInUser);
+      if (data.token) {
+        localStorage.setItem("token", data.token);
 
-      navigate(-1);
+        addUsername(username);
+        localStorage.setItem("username", JSON.stringify(username));
+
+        toast.success("V-ați creat contul cu succes!");
+        setAlreadyConnected((loggedInUser) => !loggedInUser);
+
+        navigate(-1);
+      } else {
+        throw new Error("Token not provided!");
+      }
     } catch (error) {
-      toast.error("Va rugam alegeti-va alt email sau username");
-      setError("Va rugam alegeti-va alt email sau username");
+      toast.error(error.message || "A apărut o eroare la înregistrare.");
+      setError(error.message || "A apărut o eroare la înregistrare.");
     }
   };
 

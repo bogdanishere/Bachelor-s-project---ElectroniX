@@ -1,7 +1,10 @@
-from flask import  jsonify, request
+from flask import jsonify, request
 import mysql.connector
 from mysql.connector import Error
+import jwt
+import datetime
 
+SECRET_KEY = "asdgfdagHSDHUFDS09fdss"  
 
 def addClient(db_config, data):
     connection = mysql.connector.connect(**db_config)
@@ -23,8 +26,16 @@ def addClient(db_config, data):
             cursor.execute("INSERT INTO Client (username, first_name, last_name) VALUES (%s, %s, %s)", 
                            (data['username'], data['firstName'], data['lastName']))
             connection.commit()
+            
+            # Generăm un token JWT pentru noul utilizator
+            token = jwt.encode({
+                'username': data['username'],
+                'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)  # Token-ul expiră după 24 ore
+            }, SECRET_KEY, algorithm="HS256")
+
             response['message'] = 'Client added successfully!'
             response['user'] = data['username']
+            response['token'] = token  # Includem token-ul în răspuns
             return jsonify(response), 201
         except Error as e:
             response['error'] = f"Error adding new client: {e}"
