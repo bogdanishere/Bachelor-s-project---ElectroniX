@@ -18,6 +18,26 @@ const Title = styled.span`
   justify-content: center;
 `;
 
+const Button = styled.button`
+  border: 0;
+  outline: none;
+  border-radius: 2rem;
+  padding: 1.5rem 0;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  background: var(--color-blue-700);
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.5s ease;
+  width: 15rem;
+  margin: 8px 0;
+  &:hover,
+  &:focus {
+    background: var(--color-indigo-700);
+  }
+`;
+
 function Providers() {
   const queryClient = useQueryClient();
   const { name: username } = useAddedToCart();
@@ -33,7 +53,7 @@ function Providers() {
     return response.json();
   };
 
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading, refetch } = useQuery({
     queryKey: ["providersConfirmations"],
     queryFn: fetchProvidersConfirmations,
   });
@@ -114,6 +134,7 @@ function Providers() {
     <>
       <NavBar />
       <ButtonsFunctionality />
+      <Button onClick={() => refetch()}>Reîncarcă comenzile</Button>{" "}
       <Personal
         Header={Header}
         data={data}
