@@ -5,17 +5,6 @@ from flask_cors import CORS
 import stripe
 
 
-
-import json
-import os
-from datetime import datetime
-from werkzeug.utils import secure_filename
-import base64
-import uuid
-from decimal import Decimal
-
-
-
 from client.showProducts import showProducts
 from controller.showProviders import showProviders
 from client.addClient import addClient
@@ -42,12 +31,6 @@ from client.findAddress import findAddress
 
 import jwt
 
-# UPLOAD_FOLDER = '/backend'
-# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-# def allowed_file(filename):
-#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
-
 
 app = Flask(__name__)
 
@@ -63,17 +46,6 @@ db_config = {
     'database': 'electronix2',
     'port': '3308',
 }
-
-# def connect_to_database(config):
-#     try:
-#         connection = mysql.connector.connect(**config)
-#         if connection.is_connected():
-#             return connection
-#     except Error as e:
-#         print(f"Error while connecting to MySQL: {e}")
-#         return None
-
-
 
 
 

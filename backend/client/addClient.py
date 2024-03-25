@@ -27,7 +27,6 @@ def addClient(db_config, data):
                            (data['username'], data['firstName'], data['lastName']))
             connection.commit()
             
-            # Generăm un token JWT pentru noul utilizator
             token = jwt.encode({
                 'username': data['username'],
                 'exp': datetime.datetime.utcnow() + datetime.timedelta(hours=24)  # Token-ul expiră după 24 ore
@@ -35,7 +34,7 @@ def addClient(db_config, data):
 
             response['message'] = 'Client added successfully!'
             response['user'] = data['username']
-            response['token'] = token  # Includem token-ul în răspuns
+            response['token'] = token 
             return jsonify(response), 201
         except Error as e:
             response['error'] = f"Error adding new client: {e}"

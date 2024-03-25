@@ -5,9 +5,7 @@ import { useAuth } from "../APIs/RouteLoginSignup";
 import { useAddedToCart } from "../APIs/AddToCart";
 import NavBar from "./Clients/NavBar";
 import toast from "react-hot-toast";
-import { set } from "react-hook-form";
 
-// Styled components
 const FormContainer = styled.div`
   background: var(--color-grey-0);
   padding: 40px;

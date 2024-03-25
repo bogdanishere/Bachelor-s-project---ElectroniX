@@ -2,7 +2,6 @@ import mysql.connector
 from openai import OpenAI
 from unidecode import unidecode
 
-# Configurația conexiunii la baza de date
 config = {
     "user": "root",
     "password": "manager",
@@ -11,11 +10,9 @@ config = {
     'port': 3308,
 }
 
-# Detaliile API OpenAI
 organization = 'org-2Hm8duodgXfUvforx03YY0x4'
 api_key = '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'
 
-# Conectarea la baza de date
 cnx = mysql.connector.connect(**config)
 read_cursor = cnx.cursor(buffered=True)
 write_cursor = cnx.cursor()
@@ -29,27 +26,21 @@ def produul(name):
     )
     return response.choices[0].message.content
 
-# Comanda SQL pentru a selecta product_id și name din tabelul `product`
 select_query = "SELECT product_id, name FROM product"
 
-# Executarea interogării pentru selectarea product_id și name
 read_cursor.execute(select_query)
 i=0
-# Parcurgerea rezultatelor și efectuarea acțiunii pentru fiecare produs
 for (product_id, name) in read_cursor.fetchall():
     descriere = unidecode(produul(name))
     print(i)
     i+=1
 
-    # Pregătirea interogării de update
     update_query = "UPDATE product SET description = %s WHERE product_id = %s"
     write_cursor.execute(update_query, (descriere, product_id))
 
-    # Confirmarea inserției
     cnx.commit()
     print(f"Produsul cu ID {product_id} - {name} - a fost actualizat cu succes cu descriere.")
 
-# Închiderea cursorilor și a conexiunii
 read_cursor.close()
 write_cursor.close()
 cnx.close()

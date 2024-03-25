@@ -5,7 +5,7 @@ from mysql.connector import Error
 def add_review(db_config, data):
     
     product_id = data['product_id']
-    new_rating = data['rating']  # Asumăm că acesta este un float
+    new_rating = data['rating']  
     review = data['review']
     client_username = data['username']
     title = data['title']

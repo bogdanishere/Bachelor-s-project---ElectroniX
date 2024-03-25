@@ -6,7 +6,6 @@ import { useAddedToCart } from "../APIs/AddToCart";
 import toast from "react-hot-toast";
 import styled from "styled-components";
 
-// Definirea componentelor stilizate
 const Container = styled.div`
   background: var(--color-grey-0);
   padding: 40px;

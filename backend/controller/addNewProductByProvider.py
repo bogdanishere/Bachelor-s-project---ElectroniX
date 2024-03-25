@@ -14,7 +14,6 @@ def add_new_product(db_config):
         data = request.json
         cursor = connection.cursor()
 
-        # Generăm un UUID pentru product_id
         product_id = str(uuid.uuid4())
         price = str(data['price'])
         weight = str(data['weight'])
@@ -33,10 +32,8 @@ def add_new_product(db_config):
                   data['categories'], data['dateAdded'], data['dateUpdated'], data['imageURLs'], data['sourceURLs'],
                   data['rating'], data['nr_rating'], data['description'])
 
-        # Execute the query
         cursor.execute(add_product_query, values)
 
-        # Commit the transaction
         connection.commit()
         cursor.close()
         connection.close()

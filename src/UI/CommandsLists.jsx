@@ -131,39 +131,6 @@ function CommandsLists() {
     }
   };
 
-  // async function handleSubmitOrder() {
-  //   const finishCommand = {
-  //     address_id: data ? data[0].address_id : null,
-  //     employee_username: "test_employee",
-  //     products: items,
-  //   };
-
-  //   try {
-  //     const response = await fetch("http://127.0.0.1:8005/add_command", {
-  //       method: "POST",
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //       },
-  //       body: JSON.stringify(finishCommand),
-  //     });
-
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-
-  //     const data = await response.json();
-
-  //     toast.success(data.message);
-
-  //     setAddedShopping([]);
-  //   } catch (error) {
-  //     toast.error("Comanda nu a fost plasata! Va rugam incercati din nou!");
-  //     console.error("Error while adding order:", error);
-  //   }
-
-  //   navigate("/succes");
-  // }
-
   return (
     <StyleCommand>
       <Details>

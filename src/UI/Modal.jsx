@@ -291,7 +291,6 @@ function Login() {
   const { typeUser, setTypeUser } = useProtectedRouteUsers();
 
   function handleSignOut() {
-    console.log(localStorage.getItem("token"));
     setUsername("");
     setTypeUser("client");
     close();

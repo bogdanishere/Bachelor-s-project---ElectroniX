@@ -1,15 +1,7 @@
-from flask import Flask, request, jsonify
-import mysql.connector
-from mysql.connector import Error
+from flask import Flask
 from flask_cors import CORS
-import json
-import os
-from datetime import datetime
-from werkzeug.utils import secure_filename
-import base64
-import uuid
+
 from openai import OpenAI
-from decimal import Decimal
 
 app = Flask(__name__)
 

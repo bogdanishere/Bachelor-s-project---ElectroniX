@@ -29,11 +29,9 @@ def loginClient(db_config, data):
                 'token': token  
             }), 200
         else:
-            # Eșec la autentificare
             return jsonify({'error': 'Email sau parola greșită!'}), 401
 
     except Error as e:
-        # Eroare la executarea interogării
         return jsonify({'error': f"Eroare la autentificare: {str(e)}"}), 500
 
     finally:

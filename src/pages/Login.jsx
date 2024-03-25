@@ -141,7 +141,6 @@ const Login = () => {
 
       toast.success("V-ati autentificat cu succes!");
 
-      // console.log(data.message.split(" ")[0].toLowerCase());
       if (data?.message.split(" ")[0].toLowerCase() === "employee") {
         navigate("/employee");
       }
@@ -193,7 +192,6 @@ const Login = () => {
 
           setTypeUser(data?.type.toLowerCase());
           setUsername(data?.username);
-          console.log("data", data);
           localStorage.setItem("username", JSON.stringify(data.username));
           navigateBasedOnUserRole(data?.type.toLowerCase());
         } catch (error) {

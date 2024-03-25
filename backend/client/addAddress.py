@@ -4,12 +4,10 @@ from mysql.connector import Error
 
 def add_address(db_config, data):
     try:
-        # Conectarea la baza de date
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
         
         
-        # Crearea și executarea interogării SQL pentru inserarea adresei
         insert_query = """
         INSERT INTO Address (client_username, street, city, state, country, postal_code)
         VALUES (%s, %s, %s, %s, %s, %s)
