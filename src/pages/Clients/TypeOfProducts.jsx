@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import ProductCart from "../../UI/ProductCart";
-import Dots from "../../UI/Dots";
 
 const StyledTypeOfProducts = styled.div`
   display: flex;
@@ -116,7 +115,6 @@ function TypeOfProducts({ data, title = "Recomandari", page, goToPage }) {
           Next
         </StyledButton>
       </div>
-      {/* <Dots /> */}
     </StyledTypeOfProducts>
   );
 }

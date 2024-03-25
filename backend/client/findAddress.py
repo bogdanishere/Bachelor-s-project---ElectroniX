@@ -1,4 +1,4 @@
-from flask import  jsonify, request
+from flask import  jsonify
 import mysql.connector
 from mysql.connector import Error
 

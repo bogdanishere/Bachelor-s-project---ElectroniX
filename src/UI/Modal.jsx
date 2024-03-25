@@ -298,6 +298,7 @@ function Login() {
   }
 
   function handleLoginOnAnotherAccount() {
+    localStorage.removeItem("token");
     setUsername("");
     setTypeUser("client");
     close();

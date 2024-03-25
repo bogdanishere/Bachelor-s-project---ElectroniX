@@ -59,10 +59,6 @@ function Clients() {
     return <div>Error: {error.message}</div>;
   }
 
-  // const paymentData = JSON.parse(localStorage.getItem("paymentData"));
-  // console.log(JSON.parse(localStorage.getItem("username")));
-  // console.log(paymentData);
-
   return (
     <>
       <NavBar />

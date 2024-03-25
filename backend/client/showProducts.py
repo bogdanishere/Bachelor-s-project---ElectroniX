@@ -12,10 +12,8 @@ def showProducts(db_config, page_number, sort_order):
         offset = (page - 1) * items_per_page
         connection = mysql.connector.connect(**db_config)
         
-        # Construiește baza interogării
         query = "SELECT * FROM product"
         
-        # Adaugă clauza de sortare doar dacă este necesar
         if sort_order in ['asc', 'desc']:
             query += " ORDER BY price {}".format(sort_order)
         

@@ -5,17 +5,6 @@ from flask_cors import CORS
 import stripe
 
 
-
-import json
-import os
-from datetime import datetime
-from werkzeug.utils import secure_filename
-import base64
-import uuid
-from decimal import Decimal
-
-
-
 from client.showProducts import showProducts
 from controller.showProviders import showProviders
 from client.addClient import addClient
@@ -40,14 +29,11 @@ from client.verifyPayment import verify_payment
 from client.checkoutStripe import create_checkout_session
 from client.findAddress import findAddress
 
-# UPLOAD_FOLDER = '/backend'
-# ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
-# def allowed_file(filename):
-#     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-# app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+import jwt
 
 
 app = Flask(__name__)
+
 
 CORS(app)
 app.config['PROPAGATE_EXCEPTIONS'] = True
@@ -61,20 +47,40 @@ db_config = {
     'port': '3308',
 }
 
-# def connect_to_database(config):
-#     try:
-#         connection = mysql.connector.connect(**config)
-#         if connection.is_connected():
-#             return connection
-#     except Error as e:
-#         print(f"Error while connecting to MySQL: {e}")
-#         return None
-
-
-
 
 
 stripe.api_key = "sk_test_51Ow1Qg00IzukxrMJ1tHjjSbe43YsSjkfeGSN8KZJyxyr8nM6eAxH4mRBkloPBxOsJQ9VZzWEoa9O7XQjjxVkVfYs00vHyVh2nI"
+
+
+
+
+@app.route('/verify_token', methods=['POST'])
+def verify_token():
+    SECRET_KEY = "asdgfdagHSDHUFDS09fdss"
+    data = request.get_json()
+    token = data.get('token1')
+    try:
+        decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM User WHERE username = %s", (decoded['username'],))
+        user = cursor.fetchone()
+
+        print(user)
+        print(decoded['username'])
+
+        if user:
+            return jsonify({'username': user['username'], 'type': user['type']}), 200
+        else:
+            return jsonify({'error': 'User not found', 'decoded': decoded['username']}), 404
+    except jwt.ExpiredSignatureError:
+        return jsonify({'error': 'Token expired'}), 401
+    except jwt.InvalidTokenError:
+
+        return jsonify({'error': 'Invalid token'}), 401
+    except Error as e:
+
+        return jsonify({'error': str(e)}), 500
 
 
 @app.route('/checkout', methods=['POST'])

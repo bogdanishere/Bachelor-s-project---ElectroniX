@@ -13,7 +13,7 @@ def showProductByNameID(db_config, id_product):
         if row:
             return jsonify(row), 200 
         else:
-            return jsonify({'message': 'Product not found'}), 404  # Sau un mesaj adecvat când produsul nu este găsit
+            return jsonify({'message': 'Product not found'}), 404  
         
     except Error as e:
         return jsonify({'error': str(e)}), 500

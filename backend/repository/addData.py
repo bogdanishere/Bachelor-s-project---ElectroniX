@@ -3,7 +3,6 @@ import mysql.connector
 import json
 import random
 
-# Specificați informațiile de autentificare
 config = {
     "user": "root",
     "password": "manager",
@@ -12,11 +11,9 @@ config = {
     'port': 3306,
 }
 
-# Conectare la baza de date MySQL
 connection = mysql.connector.connect(**config)
 cursor = connection.cursor()
 
-# Crearea tabelului Product dacă nu există
 create_table_sql = """
 CREATE TABLE IF NOT EXISTS product (
   product_id VARCHAR(255) PRIMARY KEY,
@@ -42,19 +39,17 @@ CREATE TABLE IF NOT EXISTS product (
 cursor.execute(create_table_sql)
 connection.commit()
 
-# Încărcarea datelor JSON din fișier
 with open('./backend/repository/output.json', 'r', encoding='utf-8') as file:
     json_data = json.load(file)
 
-# Iterați prin datele JSON și inserați fiecare element în tabelul Product
 for item in json_data:
-    product_id = item["id"]  # Presupunem că 'id' din JSON corespunde cu 'product_id'
+    product_id = item["id"]  
     price = item.get("price", 0)
     currency = item.get("prices.currency", "")
-    weight = item.get("weight", "")  # Acum weight este de tip TEXT
+    weight = item.get("weight", "")  
     name = item.get("name", "")
     brand = item.get("brand", "")
-    quantity = random.randint(50, 80)  # Generăm valori aleatorii pentru quantity
+    quantity = random.randint(50, 80) 
     prices_availability = item.get("prices.availability", "")
     prices_condition = item.get("prices.condition", "")
     prices_merchant = item.get("prices.merchant", "")
@@ -64,10 +59,9 @@ for item in json_data:
     dateUpdated = item["dateUpdated"]
     imageURLs = item.get("imageURLs", "")
     sourceURLs = item.get("sourceURLs", "")
-    rating = round(random.uniform(3.0, 5.0), 1)  # Generăm valori aleatorii pentru rating
-    nr_rating = random.randint(30, 80)  # Generăm valori aleatorii pentru nr_rating
+    rating = round(random.uniform(3.0, 5.0), 1) 
+    nr_rating = random.randint(30, 80)  
     
-    # Pregătirea interogării SQL pentru inserarea datelor
     sql = """
     INSERT IGNORE INTO product (
         product_id, price, currency, weight, name, brand, quantity, prices_availability, prices_condition,
@@ -75,13 +69,11 @@ for item in json_data:
     ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
     """
     
-    # Executarea interogării SQL
     cursor.execute(sql, (
         product_id, price, currency, weight, name, brand, quantity, prices_availability, prices_condition,
         prices_merchant, prices_sourceURLs, categories, dateAdded, dateUpdated, imageURLs, sourceURLs, rating, nr_rating
     ))
     connection.commit()
 
-# Închiderea conexiunii cu baza de date
 cursor.close()
 connection.close()
