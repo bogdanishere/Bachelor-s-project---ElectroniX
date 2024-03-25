@@ -43,7 +43,7 @@ const Button = styled.button`
 function Sidebar() {
   const { setSort } = useSortProducts();
   const fetchSidebarProducts = async () => {
-    const response = await fetch(`http://192.168.0.203:8005/product/2`);
+    const response = await fetch(`http://127.0.0.1:8005/product/2`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

@@ -14,7 +14,7 @@ const StyledReviewsSection = styled.div`
 function ReviewsSection({ productID }) {
   const fetchReviews = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/get_review/${productID}`
+      `http://127.0.0.1:8005/get_review/${productID}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");

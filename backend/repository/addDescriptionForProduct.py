@@ -7,7 +7,7 @@ config = {
     "user": "root",
     "password": "manager",
     "host": "localhost",
-    "database": "electronix",
+    "database": "electronix2",
     'port': 3308,
 }
 

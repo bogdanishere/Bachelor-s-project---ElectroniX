@@ -21,7 +21,7 @@ function Providers() {
   const name = "Furnizorule";
 
   const fetchProvidersConfirmations = async () => {
-    const response = await fetch(`http://192.168.0.203:8005/comenzi`);
+    const response = await fetch(`http://127.0.0.1:8005/comenzi`);
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }

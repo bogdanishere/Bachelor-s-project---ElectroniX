@@ -38,7 +38,7 @@ function Clients() {
 
   const fetchProducts = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/product/${page}?sort=${sort}`
+      `http://127.0.0.1:8005/product/${page}?sort=${sort}`
     );
     if (!response.ok) {
       throw new Error("Network response was not ok");
@@ -59,8 +59,9 @@ function Clients() {
     return <div>Error: {error.message}</div>;
   }
 
-  const paymentData = JSON.parse(localStorage.getItem("paymentData"));
-  console.log(paymentData);
+  // const paymentData = JSON.parse(localStorage.getItem("paymentData"));
+  // console.log(JSON.parse(localStorage.getItem("username")));
+  // console.log(paymentData);
 
   return (
     <>

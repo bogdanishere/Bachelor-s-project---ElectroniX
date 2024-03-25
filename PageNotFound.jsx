@@ -82,8 +82,7 @@ function PageNotFound() {
   const navigate = useNavigate();
 
   const moveBack = function () {
-    console.log("moveBack");
-    navigate(-1);
+    navigate("/electronix/1");
   };
 
   return (

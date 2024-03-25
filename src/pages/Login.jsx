@@ -102,6 +102,7 @@ const Login = () => {
   useEffect(() => {
     setActiveTab(type);
   }, [type, setActiveTab]);
+
   const { setName: setUsername, name: username } = useAddedToCart();
 
   const { setTypeUser } = useProtectedRouteUsers();
@@ -119,7 +120,7 @@ const Login = () => {
     };
 
     try {
-      const response = await fetch("http://192.168.0.203:8005/login", {
+      const response = await fetch("http://127.0.0.1:8005/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -134,6 +135,7 @@ const Login = () => {
 
       setTypeUser(data?.message.split(" ")[0].toLowerCase());
       setUsername(data?.user);
+      localStorage.setItem("username", JSON.stringify(data.user));
 
       toast.success("V-ati autentificat cu succes!");
 

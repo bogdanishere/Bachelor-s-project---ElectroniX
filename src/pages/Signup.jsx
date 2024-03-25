@@ -108,7 +108,7 @@ const Signup = () => {
       toast.success("Sunteti deja conectat cu un cont!", {
         id: "signup-already-connected",
       });
-      navigate("/");
+      navigate("/electronix/1");
     }
   }, [usernameActual, navigate, alreadyConnected]);
 
@@ -128,7 +128,7 @@ const Signup = () => {
 
   useEffect(() => {
     if (isActuallyAnUsername.length > 0) {
-      navigate(-1);
+      navigate("/electronix/1");
     }
   }, [isActuallyAnUsername, navigate]);
 
@@ -144,7 +144,7 @@ const Signup = () => {
     };
 
     try {
-      const response = await fetch("http://192.168.0.203:8005/add_client", {
+      const response = await fetch("http://127.0.0.1:8005/add_client", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -156,6 +156,8 @@ const Signup = () => {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       addUsername(username);
+      // local storage
+      localStorage.setItem("username", JSON.stringify(username));
 
       toast.success("V-ati creat contul cu succes!");
       setAlreadyConnected((loggedInUser) => !loggedInUser);

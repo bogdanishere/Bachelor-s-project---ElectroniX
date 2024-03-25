@@ -65,7 +65,7 @@ function Address() {
 
   const fetchExistedAddress = async () => {
     const response = await fetch(
-      `http://192.168.0.203:8005/check_address/${username}`
+      `http://127.0.0.1:8005/check_address/${username}`
     );
     if (!response.ok) throw new Error("Something went wrong");
     return response.json();
@@ -95,7 +95,7 @@ function Address() {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://192.168.0.203:8005/address", {
+      const response = await fetch("http://127.0.0.1:8005/address", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

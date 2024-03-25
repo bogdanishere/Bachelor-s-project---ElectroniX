@@ -401,7 +401,7 @@ function AddReview() {
     console.log("Review trimis", review);
     async function sendReview() {
       try {
-        const response = await fetch(`http://192.168.0.203:8005/review`, {
+        const response = await fetch(`http://127.0.0.1:8005/review`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
