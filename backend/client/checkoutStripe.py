@@ -4,8 +4,6 @@ from mysql.connector import Error
 
 def create_checkout_session(data):
     stripe.api_key = "sk_test_51Ow1Qg00IzukxrMJ1tHjjSbe43YsSjkfeGSN8KZJyxyr8nM6eAxH4mRBkloPBxOsJQ9VZzWEoa9O7XQjjxVkVfYs00vHyVh2nI"
-
-
     price = data.get('price')
     currency = data.get('currency') 
 

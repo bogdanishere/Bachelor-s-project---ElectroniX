@@ -1,36 +1,37 @@
-from flask import Flask, request, jsonify
-import mysql.connector
-from mysql.connector import Error
+from flask import Flask, request
 from flask_cors import CORS
-import stripe
 
 
 from client.showProducts import showProducts
-from controller.showProviders import showProviders
-from client.addClient import addClient
-from client.loginClient import loginClient
-from client.checkAddressExists import check_address_exists
-from controller.updateAddress import update_address
-from client.addAddress import add_address
-from client.getAddress import get_address
-from client.addCommand import add_command
-from employee.deleteOrderByEmployee import delete_order_by_employee
-from employee.confirmEmployee import confirm_employee
-from provider.deleteOrderByProvider import delete_order_by_provider
-from provider.confirmProvider import confirm_provider
-from employee.showOrders import show_orders
-from provider.showOrderDetails import show_order_details
-from client.showProductsByName import showProductsByName
-from controller.showProductByNameID import showProductByNameID
-from provider.addNewProduct import add_new_product
 from client.addReview import add_review
 from client.getReview import get_review
 from client.verifyPayment import verify_payment
 from client.checkoutStripe import create_checkout_session
 from client.findAddress import findAddress
+from client.addClient import addClient
+from client.loginClient import loginClient
+from client.checkAddressExists import check_address_exists
+from client.addAddress import add_address
+from client.getAddress import get_address
+from client.addCommand import add_command
+from client.showProductsByName import showProductsByName
 
-import jwt
 
+from employee.showOrders import show_orders
+from employee.deleteOrderByEmployee import delete_order_by_employee
+from employee.confirmEmployee import confirm_employee
+
+from provider.deleteOrderByProvider import delete_order_by_provider
+from provider.confirmProvider import confirm_provider
+from provider.showOrderDetails import show_order_details
+from provider.addNewProduct import add_new_product
+
+
+from verifyToken import verify_token
+
+from controller.showProductByNameID import showProductByNameID
+from controller.showProviders import showProviders
+from controller.updateAddress import update_address
 
 app = Flask(__name__)
 
@@ -47,40 +48,10 @@ db_config = {
     'port': '3308',
 }
 
-
-
-stripe.api_key = "sk_test_51Ow1Qg00IzukxrMJ1tHjjSbe43YsSjkfeGSN8KZJyxyr8nM6eAxH4mRBkloPBxOsJQ9VZzWEoa9O7XQjjxVkVfYs00vHyVh2nI"
-
-
-
-
 @app.route('/verify_token', methods=['POST'])
-def verify_token():
-    SECRET_KEY = "asdgfdagHSDHUFDS09fdss"
+def post_verify_token():
     data = request.get_json()
-    token = data.get('token1')
-    try:
-        decoded = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        connection = mysql.connector.connect(**db_config)
-        cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM User WHERE username = %s", (decoded['username'],))
-        user = cursor.fetchone()
-
-        print(user)
-        print(decoded['username'])
-
-        if user:
-            return jsonify({'username': user['username'], 'type': user['type']}), 200
-        else:
-            return jsonify({'error': 'User not found', 'decoded': decoded['username']}), 404
-    except jwt.ExpiredSignatureError:
-        return jsonify({'error': 'Token expired'}), 401
-    except jwt.InvalidTokenError:
-
-        return jsonify({'error': 'Invalid token'}), 401
-    except Error as e:
-
-        return jsonify({'error': str(e)}), 500
+    return verify_token(data, db_config)
 
 
 @app.route('/checkout', methods=['POST'])
