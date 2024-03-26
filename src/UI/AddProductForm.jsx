@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import FormRowProvider from "./FormRowProvider";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Input = styled.input`
   border: 1px solid var(--color-grey-500);
@@ -76,6 +77,7 @@ const StyledContainer = styled.div`
 `;
 
 function AddProductForm({ providerUsername }) {
+  const queryClient = useQueryClient();
   const {
     register,
     handleSubmit,
@@ -100,7 +102,7 @@ function AddProductForm({ providerUsername }) {
     const product = {
       product_id: "test",
       price: data.price,
-      currency: data.currency,
+      currency: data.currency.toUpperCase(),
       weight: data.weight,
       name: data.name,
       brand: data.brand,
@@ -135,6 +137,7 @@ function AddProductForm({ providerUsername }) {
       const responseData = await response.json();
       console.log("Success:", responseData);
       toast.success("Product added successfully!");
+      queryClient.invalidateQueries("showProductsByProvider");
       reset();
     } catch (error) {
       console.error("Error adding product:", error);

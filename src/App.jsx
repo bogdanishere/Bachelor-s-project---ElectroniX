@@ -113,13 +113,14 @@ function App() {
                           }
                         />
                         <Route
-                          path="providers"
+                          path="providers/:page"
                           element={
                             <ProtectedProviders>
                               <Providers />
                             </ProtectedProviders>
                           }
                         />
+
                         <Route
                           path="success"
                           element={
