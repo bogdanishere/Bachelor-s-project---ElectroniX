@@ -130,6 +130,7 @@ const Login = () => {
 
       const data = await response.json();
       if (!response.ok) {
+        console.log(data);
         throw new Error(data.error || "An error occurred during login");
       }
 
@@ -146,7 +147,7 @@ const Login = () => {
       }
 
       if (data?.message.split(" ")[0].toLowerCase() === "provider") {
-        navigate("/providers");
+        navigate("/providers/1");
       }
 
       if (data?.message.split(" ")[0].toLowerCase() === "client") {
@@ -197,7 +198,7 @@ const Login = () => {
         } catch (error) {
           console.error("Token verification error:", error.message);
 
-          // localStorage.removeItem("token");
+          localStorage.removeItem("token");
         }
       }
     };
@@ -211,7 +212,7 @@ const Login = () => {
         navigate("/employee");
         break;
       case "provider":
-        navigate("/providers");
+        navigate("/providers/1");
         break;
       case "client":
         navigate("/electronix/1");
