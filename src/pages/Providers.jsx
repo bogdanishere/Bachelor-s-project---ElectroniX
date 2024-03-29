@@ -63,6 +63,7 @@ function Providers() {
 
   const { data, error, isLoading, refetch } = useQuery({
     queryFn: fetchProvidersConfirmations,
+    queryKey: ["providersConfirmations"],
   });
 
   if (isLoading) return <Spinner />;

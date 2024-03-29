@@ -9,9 +9,14 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const session_id = params.get("session_id");
-  const { addedShopping, setAddedShopping, name: username2 } = useAddedToCart();
+  const {
+    addedShopping: addedShopping2,
+    setAddedShopping,
+    name: username2,
+  } = useAddedToCart();
 
   const username = JSON.parse(localStorage.getItem("username"));
+  const addedShopping = JSON.parse(localStorage.getItem("addedShopping"));
 
   const fetchVerifyPayment = async () => {
     const response = await fetch(
@@ -69,6 +74,8 @@ function ProtectedRoute({ children }) {
           })),
         };
 
+        console.log("finishCommand", finishCommand);
+
         try {
           const response = await fetch("http://127.0.0.1:8005/add_command", {
             method: "POST",
@@ -84,6 +91,7 @@ function ProtectedRoute({ children }) {
           toast.success(responseData.message);
           setAddedShopping([]);
           localStorage.removeItem("username");
+          localStorage.removeItem("addedShopping");
           console.log("test", responseData);
         } catch (error) {
           toast.error("Comanda nu a fost plasată! Vă rugăm încercați din nou.");

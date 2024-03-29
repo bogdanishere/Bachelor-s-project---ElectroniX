@@ -60,6 +60,8 @@ function CommandsLists() {
   const [price, setPrice] = useState(500);
   const [currency, setCurrency] = useState("USD");
 
+  localStorage.setItem("addedShopping", JSON.stringify(addedShopping));
+
   const sumPrice = addedShopping
     .reduce(
       (acc, currValue) =>
