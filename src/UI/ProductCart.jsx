@@ -222,7 +222,9 @@ function ProductCart({
               paddingRight: "0.5rem",
             }}
           >
-            <span className={styles["product-discount-label"]}>Super Pret</span>
+            <span className={styles["product-discount-label"]}>
+              {provider.slice(0, 17)}
+            </span>
             <div
               onClick={() => {
                 handleWishies(idx, fullName);

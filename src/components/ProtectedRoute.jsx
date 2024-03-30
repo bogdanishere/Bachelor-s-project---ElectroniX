@@ -9,9 +9,18 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const session_id = params.get("session_id");
-  const { addedShopping, setAddedShopping, name: username2 } = useAddedToCart();
+  const {
+    addedShopping: addedShopping2,
+    setAddedShopping,
+    name: username2,
+  } = useAddedToCart();
 
   const username = JSON.parse(localStorage.getItem("username"));
+  const addedShopping = JSON.parse(localStorage.getItem("addedShopping"));
+
+  console.log(addedShopping);
+
+  console.log("username", username);
 
   const fetchVerifyPayment = async () => {
     const response = await fetch(
@@ -47,6 +56,7 @@ function ProtectedRoute({ children }) {
   });
 
   console.log("idAddress", idAddress);
+  console.log(addedShopping);
   console.log("data", data);
 
   useEffect(() => {
@@ -58,16 +68,19 @@ function ProtectedRoute({ children }) {
 
   useEffect(() => {
     async function handleSubmitOrder() {
+      console.log(addedShopping);
       if (data && data.status === "success" && idAddress) {
         const finishCommand = {
           address_id: idAddress[0]?.address_id,
           employee_username: "test_employee",
           products: addedShopping.map((item) => ({
-            product_id: item.id,
-            provider_username: item.provider,
-            quantity: item.number,
+            product_id: item.product_id,
+            provider_username: item.provider_username,
+            quantity: item.quantity,
           })),
         };
+
+        console.log("finishCommand", finishCommand);
 
         try {
           const response = await fetch("http://127.0.0.1:8005/add_command", {

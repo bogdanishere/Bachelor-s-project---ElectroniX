@@ -61,6 +61,9 @@ function ArrivalOrder() {
   }, [username, navigate]);
 
   const fetchListCommands = async () => {
+    if (username.length === 0) {
+      return 0;
+    }
     const response = await fetch(
       `http://127.0.0.1:8005/searchFinishedOrders/${username}`,
       {

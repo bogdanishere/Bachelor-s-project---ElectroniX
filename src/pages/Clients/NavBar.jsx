@@ -108,6 +108,10 @@ function NavBar() {
     setPriceInRON((isOpen) => !isOpen);
   }
 
+  function handleListCommands() {
+    navigate("/arrivalOrders");
+  }
+
   const [searchTyped, setSearchTyped] = useState("");
 
   const { setIsShopping, setOpenWishList, setLogin, userLogin } =
@@ -161,10 +165,7 @@ function NavBar() {
         )}
         <FaHeart style={styleButtons} onClick={() => handleWishList()} />
         <IoCart style={styleButtons} onClick={() => handleProducts()} />
-        <BiAlbum
-          style={styleButtons}
-          onClick={() => navigate("/arrivalOrders")}
-        />
+        <BiAlbum style={styleButtons} onClick={() => handleListCommands()} />
       </ButtonsGroup>
     </Nav>
   );

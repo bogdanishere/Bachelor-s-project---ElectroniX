@@ -110,6 +110,10 @@ function CommandsLists() {
     };
   });
 
+  localStorage.setItem("addedShopping", JSON.stringify(items));
+
+  console.log(JSON.parse(localStorage.getItem("addedShopping")));
+
   const checkout = async () => {
     console.log(price, currency);
     try {

@@ -31,7 +31,6 @@ import ProtectedEmployee from "./components/ProtectedEmployee";
 import ProtectedProviders from "./components/ProtectedProviders";
 import ConvertPrice from "./APIs/ConvertPrice";
 import SortProducts from "./APIs/SortProducts";
-import ListArrivalOrders from "./pages/ListArrivalOrders";
 import ArrivalOrder from "./pages/ArrivalOrder";
 import ListArrivalOrder from "./APIs/ListArrivalOrder";
 
@@ -120,7 +119,7 @@ function App() {
                             }
                           />
                           <Route
-                            path="providers"
+                            path="providers/:page"
                             element={
                               <ProtectedProviders>
                                 <Providers />

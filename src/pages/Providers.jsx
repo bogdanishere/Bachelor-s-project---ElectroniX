@@ -8,6 +8,8 @@ import ButtonsFunctionality from "../UI/ButtonsFunctionality";
 import { useAddedToCart } from "../APIs/AddToCart";
 import AddProductForm from "../UI/AddProductForm";
 import styled from "styled-components";
+import { useNavigate, useParams } from "react-router-dom";
+import DeleteProductsByProvider from "./DeleteProductsByProvider";
 
 const Title = styled.span`
   font-size: 1.5em;
@@ -41,6 +43,12 @@ const Button = styled.button`
 function Providers() {
   const queryClient = useQueryClient();
   const { name: username } = useAddedToCart();
+  const { page } = useParams();
+  const navigate = useNavigate();
+
+  const goToPage = (newPage) => {
+    navigate(`/providers/${newPage}`);
+  };
 
   const fetchProvidersConfirmations = async () => {
     const response = await fetch(
@@ -54,8 +62,8 @@ function Providers() {
   };
 
   const { data, error, isLoading, refetch } = useQuery({
-    queryKey: ["providersConfirmations"],
     queryFn: fetchProvidersConfirmations,
+    queryKey: ["providersConfirmations"],
   });
 
   if (isLoading) return <Spinner />;
@@ -147,6 +155,11 @@ function Providers() {
       </Personal>
       <Title>Puteti adauga propriul vostru produs</Title>
       <AddProductForm providerUsername={username} />
+      <DeleteProductsByProvider
+        username={username}
+        page={page}
+        goToPage={goToPage}
+      />
     </>
   );
 }

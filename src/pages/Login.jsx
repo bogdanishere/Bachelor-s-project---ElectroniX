@@ -146,7 +146,7 @@ const Login = () => {
       }
 
       if (data?.message.split(" ")[0].toLowerCase() === "provider") {
-        navigate("/providers");
+        navigate("/providers/1");
       }
 
       if (data?.message.split(" ")[0].toLowerCase() === "client") {
@@ -211,7 +211,7 @@ const Login = () => {
         navigate("/employee");
         break;
       case "provider":
-        navigate("/providers");
+        navigate("/providers/1");
         break;
       case "client":
         navigate("/electronix/1");
