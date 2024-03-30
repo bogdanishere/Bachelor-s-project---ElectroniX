@@ -33,6 +33,10 @@ from controller.showProductByNameID import showProductByNameID
 from controller.showProviders import showProviders
 from controller.updateAddress import update_address
 
+from flask import  jsonify, request
+import mysql.connector
+from mysql.connector import Error
+
 app = Flask(__name__)
 
 
@@ -47,6 +51,110 @@ db_config = {
     'database': 'electronix2',
     'port': '3308',
 }
+
+@app.route('/searchFinishedOrders/<string:user>', methods=['GET'])
+def searchFinishedOrders(user):
+    connection = None
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+
+        query = """
+        SELECT 
+            o.order_id, 
+            o.client_username, 
+            o.date_created, 
+            o.employee_approved,
+            od.quantity, 
+            p.product_id, 
+            p.name AS product_name, 
+            p.brand, 
+            p.price, 
+            p.currency, 
+            p.imageURLs,
+            a.street, 
+            a.city, 
+            a.state, 
+            a.country, 
+            a.postal_code, 
+            a.address_type,
+            od.provider_approved,
+            o.employee_username
+        FROM `order` o
+        JOIN `orderdetails` od ON o.order_id = od.order_id
+        JOIN `product` p ON od.product_id = p.product_id
+        JOIN `address` a ON o.address_id = a.address_id
+        WHERE o.client_username = %s
+        """
+
+        cursor.execute(query, (user,))
+        result = cursor.fetchall()
+
+        return jsonify(result), 200
+    except Error as e:
+        return jsonify({'error': f'Eroare la preluarea comenzilor finalizate: {str(e)}'}), 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+
+
+
+@app.route('/brand-count/<int:number>', methods=['GET'])
+def show_brand_count(number):
+    connection = None
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT brand, COUNT(*) AS numar_produse FROM product GROUP BY brand ORDER BY numar_produse DESC LIMIT %s", (number,))
+        result = cursor.fetchall()
+        return jsonify(result), 200
+    except Error as e:
+        return jsonify({'error': f'Eroare la preluarea numărului de produse pe brand: {str(e)}'}), 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+
+@app.route('/deleteProductsByProvider', methods=['DELETE'])
+def deleteProductsByProvider():
+    data = request.get_json()
+    product_id = data['product_id']
+    connection = None
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("DELETE FROM product WHERE product_id = %s", (product_id,))
+        connection.commit()
+        return jsonify({'message': 'Produsul a fost sters cu succes!'}), 200
+    except Error as e:
+        return jsonify({'error': f'Eroare la stergerea produsului: {str(e)}'}), 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
+@app.route('/showProductsByProductName/<string:name>/<int:page>', methods=['GET'])
+def showProductsByProductName(name, page):
+    connection = None
+    items_per_page = 8
+    offset = (page - 1) * items_per_page
+
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM product WHERE prices_merchant = %s LIMIT %s OFFSET %s", (name, items_per_page, offset,))
+        result = cursor.fetchall()
+        return jsonify(result), 200
+    except Error as e:
+        return jsonify({'error': f'Eroare la preluarea produselor: {str(e)}'}), 500
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
+
 
 @app.route('/verify_token', methods=['POST'])
 def post_verify_token():
@@ -97,9 +205,9 @@ def get_showProductsByName(name, page_number):
     sort_order = request.args.get('sort', 'none')
     return showProductsByName(db_config, name, page_number, sort_order)
 
-@app.route('/product/product/name/<id_product>', methods=['GET'])
-def get_showProductsByNameID( id_product):
-    return showProductByNameID(db_config, id_product)
+@app.route('/product/product/name/<product_id>', methods=['GET'])
+def get_showProductsByNameID( product_id):
+    return showProductByNameID(db_config, product_id)
 
 
 @app.route('/providers', methods=['GET'])

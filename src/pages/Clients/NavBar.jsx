@@ -12,6 +12,7 @@ import electronicsLogo from "../../images/electronics-logo.png";
 import { useState } from "react";
 import { useConvertPrice } from "../../APIs/ConvertPrice";
 import { useSortProducts } from "../../APIs/SortProducts";
+import { BiAlbum } from "react-icons/bi";
 
 const Nav = styled.nav`
   display: flex;
@@ -160,6 +161,10 @@ function NavBar() {
         )}
         <FaHeart style={styleButtons} onClick={() => handleWishList()} />
         <IoCart style={styleButtons} onClick={() => handleProducts()} />
+        <BiAlbum
+          style={styleButtons}
+          onClick={() => navigate("/arrivalOrders")}
+        />
       </ButtonsGroup>
     </Nav>
   );
