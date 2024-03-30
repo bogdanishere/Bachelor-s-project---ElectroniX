@@ -31,6 +31,7 @@ import ProtectedEmployee from "./components/ProtectedEmployee";
 import ProtectedProviders from "./components/ProtectedProviders";
 import ConvertPrice from "./APIs/ConvertPrice";
 import SortProducts from "./APIs/SortProducts";
+import ListArrivalOrders from "./pages/ListArrivalOrders";
 
 // const Clients = lazy(() => import("./pages/Clients"));
 // const Employee = lazy(() => import("./pages/Employee"));
@@ -127,6 +128,10 @@ function App() {
                               <FinishCommand />
                             </ProtectedRoute>
                           }
+                        />
+                        <Route
+                          path="/arrivalOrder"
+                          element={<ListArrivalOrders />}
                         />
                         <Route path="*" element={<PageNotFound />} />
                       </Routes>
