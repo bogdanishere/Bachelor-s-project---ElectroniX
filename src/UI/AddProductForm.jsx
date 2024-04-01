@@ -2,6 +2,7 @@ import { useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import FormRowProvider from "./FormRowProvider";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Input = styled.input`
   border: 1px solid var(--color-grey-500);
@@ -82,6 +83,7 @@ function AddProductForm({ providerUsername }) {
     formState: { errors },
     reset,
   } = useForm();
+  const queryClient = useQueryClient();
 
   const toBase64 = (file) =>
     new Promise((resolve, reject) => {
@@ -135,6 +137,7 @@ function AddProductForm({ providerUsername }) {
       const responseData = await response.json();
       console.log("Success:", responseData);
       toast.success("Product added successfully!");
+      queryClient.invalidateQueries("providersConfirmations");
       reset();
     } catch (error) {
       console.error("Error adding product:", error);

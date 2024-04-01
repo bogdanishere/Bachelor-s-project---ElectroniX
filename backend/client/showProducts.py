@@ -13,9 +13,10 @@ def showProducts(db_config, page_number, sort_order):
         connection = mysql.connector.connect(**db_config)
         
         query = "SELECT * FROM product"
-        
         if sort_order in ['asc', 'desc']:
             query += " ORDER BY price {}".format(sort_order)
+        else:
+            query += " ORDER BY quality DESC"
         
         query += " LIMIT %s OFFSET %s"
         
