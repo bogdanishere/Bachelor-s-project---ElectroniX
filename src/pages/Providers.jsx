@@ -140,7 +140,7 @@ function Providers() {
 
   return (
     <>
-      <NavBar />
+      <NavBar isClient={false} />
       <ButtonsFunctionality />
       <Button onClick={() => refetch()}>Reîncarcă comenzile</Button>{" "}
       <Personal

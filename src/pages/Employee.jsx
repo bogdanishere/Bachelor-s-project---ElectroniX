@@ -278,7 +278,7 @@ function Employee() {
 
   return (
     <div>
-      <NavBar />
+      <NavBar isClient={false} />
       <ButtonsFunctionality />
       <Button onClick={() => refetch()}>Reîncarcă comenzile</Button>{" "}
       <Personal
@@ -316,14 +316,6 @@ function Employee() {
             ]}
             width={400}
             height={200}
-            slotProps={{
-              legend: {
-                position: {
-                  horizontal: "right",
-                },
-              },
-            }}
-            margin={{ left: 10 }}
           />
         </div>
       </div>

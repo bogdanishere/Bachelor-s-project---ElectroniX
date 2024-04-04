@@ -13,6 +13,7 @@ import { useProtectedRouteUsers } from "../components/ProtectedRouteUsers";
 import { useConvertPrice } from "../APIs/ConvertPrice";
 import { convertUSDtoRON, formatCurrency } from "../helpers/helpers";
 import toast from "react-hot-toast";
+import { useQueryClient } from "@tanstack/react-query";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -383,6 +384,7 @@ const StyledInput = styled.input`
 `;
 
 function AddReview() {
+  const queryClient = useQueryClient();
   const { product, reviewStar, setReviewStar } = useAddRating();
   const { name: username } = useAddedToCart();
   const { name: productName, product_id: productId } = product;
@@ -416,6 +418,7 @@ function AddReview() {
         const data = await response.json();
         console.log("Review trimis", data);
         toast.success("Review adaugat cu succes!");
+        queryClient.invalidateQueries("Reviews");
       } catch (error) {
         console.error("Error sending review:", error);
       }

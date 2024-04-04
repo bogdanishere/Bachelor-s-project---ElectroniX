@@ -32,6 +32,7 @@ from verifyToken import verify_token
 from controller.showProductByNameID import showProductByNameID
 from controller.showProviders import showProviders
 from controller.updateAddress import update_address
+from recomandationSystemKnn import list_products
 
 from flask import  jsonify, request
 import mysql.connector
@@ -52,12 +53,55 @@ db_config = {
     'port': '3308',
 }
 
+
+@app.route('/recomandationSystem', methods=['POST'])
+def recomandationSystem():
+    data = request.get_json()
+    ids = data.get('ids')
+    
+    if not ids:
+        return jsonify({"error": "No product IDs provided"}), 400
+    
+    recommended_ids_dicts = list_products(ids)
+
+    all_recommended_ids = {rec_id for rec_dict in recommended_ids_dicts for rec_id in rec_dict['recommendations']}
+
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor(dictionary=True)
+
+    recommended_products = []
+
+    for product_id in all_recommended_ids:
+        query = 'SELECT * FROM product WHERE product_id = %s'
+        cursor.execute(query, (product_id,))
+        fetch = cursor.fetchone()
+        if fetch:  
+            recommended_products.append(fetch)
+
+    cursor.close()
+    connection.close()
+
+    return jsonify(recommended_products), 200
+
+
+
+
 @app.route('/searchFinishedOrders/<string:user>', methods=['GET'])
 def searchFinishedOrders(user):
     connection = None
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
+
+        update_query = """
+        UPDATE orderdetails od
+        JOIN `order` o ON od.order_id = o.order_id
+        SET od.status = 'livrată'
+        WHERE od.arrival_time <= NOW() AND od.status != 'livrată' AND od.status != 'in pregatire' AND o.client_username = %s
+        """
+        cursor.execute(update_query, (user,))
+        
+        connection.commit()
 
         query = """
         SELECT 
@@ -79,7 +123,12 @@ def searchFinishedOrders(user):
             a.postal_code, 
             a.address_type,
             od.provider_approved,
-            o.employee_username
+            o.employee_username,
+            od.status,
+            CASE
+                WHEN od.status != 'in pregatire' THEN od.arrival_time
+                ELSE NULL
+            END AS arrival_time
         FROM `order` o
         JOIN `orderdetails` od ON o.order_id = od.order_id
         JOIN `product` p ON od.product_id = p.product_id

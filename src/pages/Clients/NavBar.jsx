@@ -17,9 +17,10 @@ import { BiAlbum } from "react-icons/bi";
 const Nav = styled.nav`
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   padding-bottom: 1rem;
   gap: 2rem;
+  padding-right: 2rem;
 `;
 const Logo = styled.div`
   min-width: 15rem;
@@ -85,7 +86,7 @@ const styleButtons = {
   color: "lightblue",
 };
 
-function NavBar() {
+function NavBar({ isClient = true }) {
   const navigate = useNavigate();
 
   function handleProducts() {
@@ -122,8 +123,10 @@ function NavBar() {
   const { setPriceInRON } = useConvertPrice();
   const { setSort } = useSortProducts();
   function handleNavigateImage() {
-    setSort("none");
-    navigate("/electronix/1");
+    if (isClient) {
+      setSort("none");
+      navigate("/electronix/1");
+    }
   }
 
   return (
@@ -135,37 +138,48 @@ function NavBar() {
           onClick={() => handleNavigateImage()}
         />
       </Logo>
-      <StyledSearchBar
-        onKeyDown={(e) => {
-          if (e.key === "Enter" && searchTyped !== "") {
-            handleNavigateToProduct();
-          }
-        }}
-      >
-        <SearchInput
-          type="text"
-          placeholder="Cauta..."
-          value={searchTyped}
-          onChange={(e) => setSearchTyped(e.target.value)}
-        />
-        <StyledCiSearch onClick={handleNavigateToProduct} />
-      </StyledSearchBar>
+      {isClient && (
+        <StyledSearchBar
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && searchTyped !== "") {
+              handleNavigateToProduct();
+            }
+          }}
+        >
+          <SearchInput
+            type="text"
+            placeholder="Cauta..."
+            value={searchTyped}
+            onChange={(e) => setSearchTyped(e.target.value)}
+          />
+          <StyledCiSearch onClick={handleNavigateToProduct} />
+        </StyledSearchBar>
+      )}
 
-      {name && <div>Bine ati venit, {name}</div>}
       <ButtonsGroup>
-        <CiMoneyCheck1
-          style={styleButtons}
-          onClick={() => handleConvertion()}
-        />
+        {name && <div>Bine ati venit, {name}</div>}
+        {isClient && (
+          <CiMoneyCheck1
+            style={styleButtons}
+            onClick={() => handleConvertion()}
+          />
+        )}
 
         {!userLogin ? (
           <IoMdPerson style={styleButtons} onClick={() => handleLogin()} />
         ) : (
           <>Nume</>
         )}
-        <FaHeart style={styleButtons} onClick={() => handleWishList()} />
-        <IoCart style={styleButtons} onClick={() => handleProducts()} />
-        <BiAlbum style={styleButtons} onClick={() => handleListCommands()} />
+        {isClient && (
+          <>
+            <FaHeart style={styleButtons} onClick={() => handleWishList()} />
+            <IoCart style={styleButtons} onClick={() => handleProducts()} />
+            <BiAlbum
+              style={styleButtons}
+              onClick={() => handleListCommands()}
+            />
+          </>
+        )}
       </ButtonsGroup>
     </Nav>
   );

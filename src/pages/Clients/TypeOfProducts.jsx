@@ -75,7 +75,12 @@ const ProductList = styled.div`
   }
 `;
 
-function TypeOfProducts({ data, title = "Recomandari", page, goToPage }) {
+function TypeOfProducts({
+  data,
+  title = "Recomandari",
+  page = null,
+  goToPage,
+}) {
   return (
     <StyledTypeOfProducts>
       <StyledHeader>{title}</StyledHeader>
@@ -103,18 +108,20 @@ function TypeOfProducts({ data, title = "Recomandari", page, goToPage }) {
         ))}
       </ProductList>
 
-      <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
-        <StyledButton
-          onClick={() => goToPage(parseInt(page) - 1)}
-          disabled={page <= 1}
-        >
-          Prev
-        </StyledButton>
-        <StyledSpan>Page {page}</StyledSpan>
-        <StyledButton onClick={() => goToPage(parseInt(page) + 1)}>
-          Next
-        </StyledButton>
-      </div>
+      {page !== null && (
+        <div style={{ display: "flex", justifyContent: "center", gap: "2rem" }}>
+          <StyledButton
+            onClick={() => goToPage(parseInt(page) - 1)}
+            disabled={page <= 1}
+          >
+            Prev
+          </StyledButton>
+          <StyledSpan>Page {page}</StyledSpan>
+          <StyledButton onClick={() => goToPage(parseInt(page) + 1)}>
+            Next
+          </StyledButton>
+        </div>
+      )}
     </StyledTypeOfProducts>
   );
 }

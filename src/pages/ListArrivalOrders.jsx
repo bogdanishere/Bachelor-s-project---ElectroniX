@@ -7,11 +7,6 @@ function ListArrivalOrders({ order }) {
   const navigate = useNavigate();
   const { priceInRON } = useConvertPrice();
   const [price, setPrice] = useState(0);
-  const status =
-    order.provider_approved === 1 && order.employee_approved === 1
-      ? "In drum spre dumneavoastra"
-      : "In asteptare";
-
   const handleNavigateToProduct = (id) => {
     navigate(`/electronix/product/search/${id}`);
   };
@@ -37,7 +32,8 @@ function ListArrivalOrders({ order }) {
       {priceInRON
         ? formatCurrency(price)
         : formatCurrency(order.price, order.currency)}
-      {"  -  "}Status comanda: {status}
+      {order.arrival_time && ` - Ora livrarii: ${order.arrival_time}`}
+      {"  -  "}Status comanda: {order.status}
     </h3>
   );
 }

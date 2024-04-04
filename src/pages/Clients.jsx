@@ -59,6 +59,9 @@ function Clients() {
     return <div>Error: {error.message}</div>;
   }
 
+  const items = JSON.parse(localStorage.getItem("knnProducts")) || [];
+  console.log(items);
+
   return (
     <>
       <NavBar />
@@ -67,13 +70,21 @@ function Clients() {
         <Header />
         <Main>
           <ButtonsFunctionality />
+
           <TypeOfProducts
             key={page}
             data={data}
-            title="Avem un set de recomandari pe care v-ar putea interesa"
+            title="Produsele noastre cele mai cautate"
             page={page}
             goToPage={goToPage}
           />
+          {items?.length !== 0 && (
+            <TypeOfProducts
+              key={"knn"}
+              data={items}
+              title="Produsele pe baza cautarii dumneavoastra"
+            />
+          )}
         </Main>
         <Footer />
       </StyledAppLayout>
