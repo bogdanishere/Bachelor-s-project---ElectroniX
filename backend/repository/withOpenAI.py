@@ -5,8 +5,8 @@ from openai import OpenAI
 
 app = Flask(__name__)
 
-organization = 'org-2Hm8duodgXfUvforx03YY0x4'
-api_key = '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'
+organization = 'organisation_KEY'
+api_key = 'API_KEY'
 
 @app.route('/describeproduct/<string:name_product>', methods=['GET'])
 def get_describeProduct(name_product):
