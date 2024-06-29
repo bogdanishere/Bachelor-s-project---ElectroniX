@@ -1,8 +1,9 @@
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import styled, { css } from "styled-components";
 import FormRowProvider from "./FormRowProvider";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { useState } from "react";
 
 const Input = styled.input`
   border: 1px solid var(--color-grey-500);
@@ -75,14 +76,21 @@ const StyledContainer = styled.div`
   padding: 2rem;
   border-radius: 1rem;
 `;
+const StyledImage = styled.img`
+  width: 400px;
+  height: auto;
+  margin-bottom: 1rem;
+`;
 
 function AddProductForm({ providerUsername }) {
+  const [image, setImage] = useState(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm();
+
   const queryClient = useQueryClient();
 
   const toBase64 = (file) =>
@@ -93,11 +101,13 @@ function AddProductForm({ providerUsername }) {
       reader.onerror = (error) => reject(error);
     });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data, e) => {
+    e.preventDefault();
     let base64Image = "";
     if (data.image && data.image.length > 0) {
       base64Image = await toBase64(data.image[0]);
     }
+    setImage(null);
 
     const product = {
       product_id: "test",
@@ -201,7 +211,17 @@ function AddProductForm({ providerUsername }) {
         </FormRowProvider>
 
         <FormRowProvider label="File" error={errors.file}>
-          <Input type="file" {...register("image", { required: true })} />
+          <Input
+            type="file"
+            {...register("image", { required: true })}
+            onChange={async (e) => {
+              if (e.target.files.length > 0) {
+                const file = e.target.files[0];
+                const base64File = await toBase64(file);
+                setImage(base64File);
+              }
+            }}
+          />
         </FormRowProvider>
 
         <FormRowProvider label="Description" error={errors.description}>
@@ -213,6 +233,12 @@ function AddProductForm({ providerUsername }) {
 
         <Button type="submit">Submit</Button>
       </Form>
+      {image && (
+        <>
+          <h1>Imaginea incarcata o puteti vizualiza mai jos</h1>
+          <StyledImage src={image} alt="image" />
+        </>
+      )}
     </StyledContainer>
   );
 }

@@ -9,6 +9,8 @@ import { CiMoneyCheck1 } from "react-icons/ci";
 
 import { useNavigate } from "react-router-dom";
 import electronicsLogo from "../../images/electronics-logo.png";
+import image2 from "../../images/image2.jpg";
+import image from "../../images/image.png";
 import { useState } from "react";
 import { useConvertPrice } from "../../APIs/ConvertPrice";
 import { useSortProducts } from "../../APIs/SortProducts";
@@ -133,7 +135,7 @@ function NavBar({ isClient = true }) {
     <Nav>
       <Logo>
         <ImgIcon
-          src={electronicsLogo}
+          src={image}
           alt="electronics-logo"
           onClick={() => handleNavigateImage()}
         />

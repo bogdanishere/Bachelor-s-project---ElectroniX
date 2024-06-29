@@ -45,7 +45,9 @@ def knn_recomandationSystem(id_produs, n_recommendations=5, df=data):
     get_top('name_', df['name'], 5, 10)
     get_top('brand_', df['brand'], len(df['brand'].unique()), 1000)
 
-    X = df.drop(columns=['name','weight','brand','categories','rating', 'quantity', 'product_id', 'currency', 'description', 'prices_availability', 'prices_condition', 'prices_merchant', 'prices_sourceURLs', 'dateAdded', 'dateUpdated', 'imageURLs', 'sourceURLs', 'nr_rating'])
+    X = df.drop(columns=['name','weight','brand','categories','rating', 'quantity', 'product_id', 'currency',
+                          'description', 'prices_availability', 'prices_condition', 'prices_merchant', 'prices_sourceURLs',
+                            'dateAdded', 'dateUpdated', 'imageURLs', 'sourceURLs', 'nr_rating'])
 
     model = NearestNeighbors(n_neighbors=5, algorithm='brute', metric='cosine')
     model.fit(X)
@@ -87,3 +89,5 @@ def list_products(productIds):
                 "error": "Failed to get recommendations"
             })
     return recommendations
+
+

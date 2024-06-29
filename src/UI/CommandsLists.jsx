@@ -126,6 +126,9 @@ function CommandsLists() {
       });
       const data = await response.json();
 
+      console.log(data);
+      console.log(data.url);
+
       if (data.url) {
         // localStorage.setItem("paymentData", JSON.stringify(data));
         window.location.assign(data.url);

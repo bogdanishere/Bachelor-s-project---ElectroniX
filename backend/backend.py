@@ -38,6 +38,7 @@ from flask import  jsonify, request
 import mysql.connector
 from mysql.connector import Error
 
+
 app = Flask(__name__)
 
 
@@ -54,6 +55,8 @@ db_config = {
 }
 
 
+
+
 @app.route('/recomandationSystem', methods=['POST'])
 def recomandationSystem():
     data = request.get_json()
@@ -63,6 +66,7 @@ def recomandationSystem():
         return jsonify({"error": "No product IDs provided"}), 400
     
     recommended_ids_dicts = list_products(ids)
+    print(recommended_ids_dicts)
 
     all_recommended_ids = {rec_id for rec_dict in recommended_ids_dicts for rec_id in rec_dict['recommendations']}
 
@@ -194,7 +198,7 @@ def showProductsByProductName(name, page):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM product WHERE prices_merchant = %s LIMIT %s OFFSET %s", (name, items_per_page, offset,))
+        cursor.execute("SELECT * FROM product WHERE prices_merchant = %s ORDER BY dateAdded DESC LIMIT %s OFFSET %s ", (name, items_per_page, offset,))
         result = cursor.fetchall()
         return jsonify(result), 200
     except Error as e:

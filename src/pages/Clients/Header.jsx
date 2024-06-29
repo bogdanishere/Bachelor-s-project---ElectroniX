@@ -13,7 +13,7 @@ const StyledHeader = styled.header`
 function Header() {
   return (
     <StyledHeader>
-      <div className="main">Bine ati venit la Magazinul nostru, ElextroniX</div>
+      <div className="main">Bine ati venit la Magazinul nostru, ElectroniX</div>
     </StyledHeader>
   );
 }

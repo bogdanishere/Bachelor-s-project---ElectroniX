@@ -12,6 +12,7 @@ import ButtonsFunctionality from "../UI/ButtonsFunctionality";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSortProducts } from "../APIs/SortProducts";
 import { useAddedToCart } from "../APIs/AddToCart";
+import PageNotFetch from "../../PageNotFetch";
 
 const StyledAppLayout = styled.div`
   display: grid;
@@ -56,10 +57,21 @@ function Clients() {
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <PageNotFetch error={error.message} />;
+    // return <div>Error: {error.message}</div>;
   }
 
-  const items = JSON.parse(localStorage.getItem("knnProducts")) || [];
+  const rawItems = localStorage.getItem("knnProducts");
+  let items = [];
+
+  if (rawItems && rawItems !== "undefined") {
+    try {
+      items = JSON.parse(rawItems);
+    } catch (error) {
+      console.error("Error parsing JSON from localStorage:", error);
+    }
+  }
+
   console.log(items);
 
   return (

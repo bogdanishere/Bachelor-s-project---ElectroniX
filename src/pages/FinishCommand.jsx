@@ -64,8 +64,8 @@ const StyledButton = styled.button`
   display: inline-block;
   width: 10rem;
   height: auto;
-  background-color: var(--color-primary);
-  color: var(--color-text);
+  /* background-color: var(--color-primary); */
+  color: var(--color-brand-500);
   border: none;
   border-radius: 10rem;
   font-size: 1.2rem;
@@ -90,7 +90,9 @@ function FinishCommand() {
     <StyledFinishCommand>
       <Box>
         <Heading as="h1">Comanda a fost trimisa cu succes</Heading>
-        <StyledButton onClick={moveBack}>&larr; Go back</StyledButton>
+        <StyledButton onClick={moveBack}>
+          &larr; Inapoi la pagina principala
+        </StyledButton>
       </Box>
     </StyledFinishCommand>
   );

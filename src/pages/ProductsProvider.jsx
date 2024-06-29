@@ -76,6 +76,7 @@ export function ProductsProvider({ item: data }) {
         paddingLeft: "2rem",
         justifyContent: "center",
         gap: "2rem",
+        paddingTop: "2.5rem",
       }}
     >
       <Button onClick={() => handleDeleteProduct()}>Stergeti produsul</Button>

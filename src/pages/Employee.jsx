@@ -201,6 +201,8 @@ function Employee() {
     queryFn: fetchSatistics,
   });
 
+  console.log(statistics);
+
   if (isLoading || isLoadingStatistics) return <Spinner />;
   if (error || errorStatistics)
     return <div>An error occurred: {error.message}</div>;

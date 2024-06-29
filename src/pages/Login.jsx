@@ -204,7 +204,9 @@ const Login = () => {
 
     verifyTokenAndLogin();
   }, []);
-
+  // Disabled warning about missing dependency since
+  // this code is designed to use a single dependency
+  // eslint-disable-next-line
   const navigateBasedOnUserRole = (userType) => {
     switch (userType) {
       case "employee":

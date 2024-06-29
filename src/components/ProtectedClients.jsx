@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useProtectedRouteUsers } from "./ProtectedRouteUsers";
 import { useEffect } from "react";
 
-function ProtectedEmployee({ children }) {
+function ProtectedClients({ children }) {
   const navigate = useNavigate();
   const { typeUser } = useProtectedRouteUsers();
   console.log(typeUser);
@@ -16,4 +16,4 @@ function ProtectedEmployee({ children }) {
   return <div>{children}</div>;
 }
 
-export default ProtectedEmployee;
+export default ProtectedClients;

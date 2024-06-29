@@ -31,3 +31,7 @@ def showProducts(db_config, page_number, sort_order):
         if connection is not None and connection.is_connected():
             cursor.close()
             connection.close()
+
+
+
+

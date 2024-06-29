@@ -9,6 +9,7 @@ function ProtectedRoute({ children }) {
   const navigate = useNavigate();
   const params = new URLSearchParams(window.location.search);
   const session_id = params.get("session_id");
+  console.log(session_id);
   const {
     addedShopping: addedShopping2,
     setAddedShopping,
@@ -44,6 +45,8 @@ function ProtectedRoute({ children }) {
     queryKey: ["stripeResponse", session_id],
     queryFn: () => fetchVerifyPayment(session_id),
   });
+
+  console.log(data);
 
   const {
     data: idAddress,

@@ -213,6 +213,10 @@ function Products({ products, onProducts }) {
   convertUSDtoRON(sumProducts, products[0].currency).then((result) => {
     setPriceRON(result);
   });
+  const handleNavigateToProduct = (id) => {
+    close();
+    navigate(`/electronix/product/search/${id}`);
+  };
 
   return (
     <>
@@ -220,7 +224,9 @@ function Products({ products, onProducts }) {
         {products.map((product) => (
           <ListItem key={product.id}>
             <Quantity>{product.number}x</Quantity>
-            <ProductName>{product.name.slice(0, 45)}</ProductName>
+            <ProductName onClick={() => handleNavigateToProduct(product.id)}>
+              {product.name.slice(0, 45)}
+            </ProductName>
             <ButtonGroup>
               <Button onClick={() => handleDecrement(product.id)}>
                 <FiMinus />
@@ -257,9 +263,9 @@ function Wishies({ products, onProducts }) {
       currentProducts.filter((product) => product.id !== id)
     );
   };
-  const handleNavigateToProduct = (name, id) => {
+  const handleNavigateToProduct = (id) => {
     close();
-    navigate(`/electronix/product/${name}/${id}`);
+    navigate(`/electronix/product/search/${id}`);
   };
 
   if (products.length === 0) return <div>Nu ati selectat niciun produs</div>;
@@ -269,9 +275,7 @@ function Wishies({ products, onProducts }) {
       <List>
         {products.map((product) => (
           <ListItem key={product.id}>
-            <ProductName
-              onClick={() => handleNavigateToProduct(product.name, product.id)}
-            >
+            <ProductName onClick={() => handleNavigateToProduct(product.id)}>
               {product.name.slice(0, 50)}
             </ProductName>
             <Button onClick={() => handleDelete(product.id)}>
